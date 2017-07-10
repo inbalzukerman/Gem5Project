@@ -34,25 +34,32 @@ Node nodes [ 902 ] = {
 int max = initial_size+nodes_size;
 
 //returns the data after which newNode was added
-int insert(Node& begin, Node& newNode){
+inline int insert(Node& begin, Node& newNode, int counter){
 	if(begin.data > newNode.data){
 		//shouldn't happen!
 		newNode.next=&begin;
 		return -9999999;
 	}
 	Node* n;
+	bool updated = false;
+	counter = 0;
 
-	for(n=&begin; n->data!= 100001; n=n->next){
-		if((n->data <= newNode.data) &&  (newNode.data < n->next->data)){
+	for(n=&begin; n->data!= 100001 && counter < 1; n=n->next){
+		if((n->data <= newNode.data) &&  (newNode.data < n->next->data) && !updated){
 			newNode.next=n->next;
 			n->next = &newNode;
-			return n->data;	
+			updated = true;	
+			//return n->data;	
+		}
+		if(updated){
+
+			counter++;
 		}
 	}
 
 	//shouldn't happen
-	n->next = &newNode;
-	return 999999999999; 
+	//n->next = &newNode;
+	return 1; 
 }
 
 void printList(Node& begin, string delimiter){
@@ -111,7 +118,7 @@ int main (int argc, char *argv[]){
 
 	for(int i = 0; i<= nodes_size-1; i++){
 		m5_addsymbol( 42, (char*) &nodes[i]); 
-	}
+	}  
 
 	m5_reset_stats(0,0);
 
@@ -131,10 +138,10 @@ int main (int argc, char *argv[]){
 
 	    int beginIndex = (nodes_size/nthreads)*tid;
 		int endIndex = (tid+1 != nthreads)? (nodes_size/nthreads)*(tid+1) : nodes_size;
-
+		int counter;
 
 		for(int i = beginIndex; i < endIndex; i++){
-			int where = insert(begin, nodes[i]);
+			int where = insert(begin, nodes[i], counter);
 		}
  
 		
