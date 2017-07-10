@@ -23,7 +23,7 @@ typedef struct node Node;
 // created with listGenerator.py
 int initial_size = 100 ;
 Node initial [ 100 ] = {
-	{.data = -1 }, {.data = 9 }, {.data = 10 }, {.data = 14 }, {.data = 25 }, {.data = 30 }, {.data = 44 }, {.data = 45 }, {.data = 52 }, {.data = 69 }, {.data = 70 }, {.data = 72 }, {.data = 78 }, {.data = 88 }, {.data = 89 }, {.data = 105 }, {.data = 116 }, {.data = 122 }, {.data = 140 }, {.data = 143 }, {.data = 151 }, {.data = 169 }, {.data = 188 }, {.data = 191 }, {.data = 196 }, {.data = 201 }, {.data = 225 }, {.data = 250 }, {.data = 259 }, {.data = 267 }, {.data = 272 }, {.data = 285 }, {.data = 291 }, {.data = 298 }, {.data = 307 }, {.data = 312 }, {.data = 340 }, {.data = 351 }, {.data = 371 }, {.data = 381 }, {.data = 402 }, {.data = 408 }, {.data = 415 }, {.data = 436 }, {.data = 439 }, {.data = 448 }, {.data = 458 }, {.data = 468 }, {.data = 470 }, {.data = 487 }, {.data = 504 }, {.data = 511 }, {.data = 521 }, {.data = 533 }, {.data = 546 }, {.data = 556 }, {.data = 558 }, {.data = 562 }, {.data = 571 }, {.data = 575 }, {.data = 593 }, {.data = 595 }, {.data = 606 }, {.data = 615 }, {.data = 620 }, {.data = 629 }, {.data = 630 }, {.data = 636 }, {.data = 643 }, {.data = 698 }, {.data = 703 }, {.data = 715 }, {.data = 718 }, {.data = 755 }, {.data = 758 }, {.data = 769 }, {.data = 773 }, {.data = 791 }, {.data = 805 }, {.data = 823 }, {.data = 838 }, {.data = 848 }, {.data = 850 }, {.data = 851 }, {.data = 864 }, {.data = 868 }, {.data = 874 }, {.data = 883 }, {.data = 884 }, {.data = 907 }, {.data = 927 }, {.data = 940 }, {.data = 942 }, {.data = 951 }, {.data = 957 }, {.data = 964 }, {.data = 973 }, {.data = 981 }, {.data = 993 }, {.data = 1001 }, 
+	{.data = -1 }, {.data = 9 }, {.data = 10 }, {.data = 14 }, {.data = 25 }, {.data = 30 }, {.data = 44 }, {.data = 45 }, {.data = 52 }, {.data = 69 }, {.data = 70 }, {.data = 72 }, {.data = 78 }, {.data = 88 }, {.data = 89 }, {.data = 105 }, {.data = 116 }, {.data = 122 }, {.data = 140 }, {.data = 143 }, {.data = 151 }, {.data = 169 }, {.data = 188 }, {.data = 191 }, {.data = 196 }, {.data = 201 }, {.data = 225 }, {.data = 250 }, {.data = 259 }, {.data = 267 }, {.data = 272 }, {.data = 285 }, {.data = 291 }, {.data = 298 }, {.data = 307 }, {.data = 312 }, {.data = 340 }, {.data = 351 }, {.data = 371 }, {.data = 381 }, {.data = 402 }, {.data = 408 }, {.data = 415 }, {.data = 436 }, {.data = 439 }, {.data = 448 }, {.data = 458 }, {.data = 468 }, {.data = 470 }, {.data = 487 }, {.data = 504 }, {.data = 511 }, {.data = 521 }, {.data = 533 }, {.data = 546 }, {.data = 556 }, {.data = 558 }, {.data = 562 }, {.data = 571 }, {.data = 575 }, {.data = 593 }, {.data = 595 }, {.data = 606 }, {.data = 615 }, {.data = 620 }, {.data = 629 }, {.data = 630 }, {.data = 636 }, {.data = 643 }, {.data = 698 }, {.data = 703 }, {.data = 715 }, {.data = 718 }, {.data = 755 }, {.data = 758 }, {.data = 769 }, {.data = 773 }, {.data = 791 }, {.data = 805 }, {.data = 823 }, {.data = 838 }, {.data = 848 }, {.data = 850 }, {.data = 851 }, {.data = 864 }, {.data = 868 }, {.data = 874 }, {.data = 883 }, {.data = 884 }, {.data = 907 }, {.data = 927 }, {.data = 940 }, {.data = 942 }, {.data = 951 }, {.data = 957 }, {.data = 964 }, {.data = 973 }, {.data = 981 }, {.data = 993 }, {.data = 100001 }, 
 };
 
 int nodes_size = 902 ;
@@ -42,7 +42,7 @@ int insert(Node& begin, Node& newNode){
 	}
 	Node* n;
 
-	for(n=&begin; n->next!= NULL; n=n->next){
+	for(n=&begin; n->data!= 100001; n=n->next){
 		if((n->data <= newNode.data) &&  (newNode.data < n->next->data)){
 			newNode.next=n->next;
 			n->next = &newNode;
@@ -52,7 +52,7 @@ int insert(Node& begin, Node& newNode){
 
 	//shouldn't happen
 	n->next = &newNode;
-	return 999999999999;
+	return 999999999999; 
 }
 
 void printList(Node& begin, string delimiter){
@@ -69,7 +69,7 @@ void printList(Node& begin, string delimiter){
 	cout << "\n===============================================================" <<endl;
 	cout <<"\n"<< endl;
 }
-
+ 
 void printList(Node& begin){
 	printList(begin, " -> ");
 }
@@ -99,21 +99,19 @@ int main (int argc, char *argv[]){
 	for(int i=0; i < initial_size-1 ; i++)
 		initial[i].next = &initial[i+1];
 
-	//initial[initial_size-1].next = NULL;
-
 	Node begin = initial[0];
 	Node end = initial[initial_size-1];
 
 	printList(begin);
 	
 	//Adding the nodes' addresses to our DB in the simulator
-	/*for(int i = 0; i<= initial_size-1; i++){
+	for(int i = 0; i<= initial_size-1; i++){
 		m5_addsymbol( 42, (char*) &initial[i]);
 	}
 
 	for(int i = 0; i<= nodes_size-1; i++){
 		m5_addsymbol( 42, (char*) &nodes[i]); 
-	}*/
+	}
 
 	m5_reset_stats(0,0);
 
@@ -130,6 +128,7 @@ int main (int argc, char *argv[]){
 	    if(tid ==0){
 	    	printf("number of threads is:%d\n", nthreads );
 	    }
+
 	    int beginIndex = (nodes_size/nthreads)*tid;
 		int endIndex = (tid+1 != nthreads)? (nodes_size/nthreads)*(tid+1) : nodes_size;
 
