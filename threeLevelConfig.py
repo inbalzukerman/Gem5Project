@@ -19,6 +19,18 @@ import common
 
 from cpu2000 import *
 
+class L1ICache(L1Cache):
+    size = '32kB'
+
+class L1DCache(L1Cache):
+    size = '32kB'
+ 
+class L2(L2Cache):
+    size = '256kB'
+
+class L3(L2Cache):
+    size = '32MB'
+
 
 # Set the usage message to display
 SimpleOpts.set_usage("usage: %prog [options] <binary to execute>")
@@ -65,11 +77,11 @@ for cpu in cpus:
 
     cpu.addTwoLevelCacheHierarchy(L1DCache(opts), # data L1
                                 L1ICache(opts),   # instructions L1
-                                L2Cache(opts))
+                                L2(opts))
 
     
 
-system.l3 = L2Cache(opts)
+system.l3 = L3(opts)
 
 system.toL3bus = CoherentXBar(forward_latency = 3, frontend_latency = 3, response_latency = 3,
 									  snoop_response_latency = 3, width = 32)
