@@ -1437,7 +1437,7 @@ void Cache::recvTimingResp(PacketPtr pkt) {
 
 			//yay
 			if(tgt_pkt->req->hasVaddr() && !(databaseManager::containsAddress(tgt_pkt->req->getVaddr()))){
-				completion_time +=22000; 
+				completion_time +=40000; // add 40000 if 2 level config and 22000 if 3 level config
 				//databaseManager::getStream() << "case1 - completion time: " << completion_time << " \t address: "<< tgt_pkt->req->getVaddr() << std::endl;
 			}
 
