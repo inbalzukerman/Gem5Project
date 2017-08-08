@@ -64,6 +64,7 @@
 #include "mem/cache/prefetch/base.hh"
 #include "sim/sim_exit.hh"
 #include <string>
+#include <iostream>
 
 #include "sim/databaseManager.hh"
 using std::string;
@@ -314,8 +315,8 @@ bool Cache::access(PacketPtr pkt, CacheBlk *&blk, Cycles &lat,
 		}
 		if (databaseManager::containsAddress(pkt->req->getVaddr())) {
 
-			//string s = blk ? "hit " + blk->print() : "miss";
-			//databaseManager::getStream() << "Access " << this->name() << " " << s << " address: " << pkt->req->getVaddr()<< " time: " << curTick() << std::endl;
+			string s = blk ? "hit " + blk->print() : "miss";
+			databaseManager::getStream() << "Access " << this->name() << " " << s << " address: " << pkt->req->getVaddr()<< " time: " << curTick() << std::endl;
 
 			if(blk != NULL){
 			databaseManager::importantHits++;
@@ -901,7 +902,7 @@ bool Cache::recvTimingReq(PacketPtr pkt) {
 
 	//yay
 	if (pkt->req->hasVaddr() && databaseManager::containsAddress(pkt->req->getVaddr())) {
-		//databaseManager::getStream() << "SCHEDing request: " << request_time << " for address " << pkt->req->getVaddr() << std::endl;
+		databaseManager::getStream() << "SCHEDing request: " << request_time << " for address " << pkt->req->getVaddr() << std::endl;
 	}
 
 	if (next_pf_time != MaxTick)
@@ -1230,7 +1231,7 @@ void Cache::recvTimingResp(PacketPtr pkt) {
 	//yay
 	if(pkt->req->hasVaddr() && databaseManager::containsAddress(pkt->req->getVaddr())){
 
-		//databaseManager::getStream() << "Answer: " << this->name() << "\taddress: " << pkt->req->getVaddr() << "\ttime: " << curTick() << std::endl;
+		databaseManager::getStream() << "Answer: " << this->name() << "\taddress: " << pkt->req->getVaddr() << "\ttime: " << curTick() << std::endl;
 	}
 	
 
@@ -1437,8 +1438,20 @@ void Cache::recvTimingResp(PacketPtr pkt) {
 
 			//yay
 			if(tgt_pkt->req->hasVaddr() && !(databaseManager::containsAddress(tgt_pkt->req->getVaddr()))){
-				completion_time +=40000; // add 40000 if 2 level config and 22000 if 3 level config
-				//databaseManager::getStream() << "case1 - completion time: " << completion_time << " \t address: "<< tgt_pkt->req->getVaddr() << std::endl;
+
+				//~~~For Three level config, un-comment this!~~~//
+				if((this->name().find("l2cache") != string::npos)){
+					//std::cout<<"here!" << this->name() << std::endl;
+					completion_time += 94500;  //49500; // add 40000 if 2 level config and 22000 if 3 level config
+					databaseManager::getStream() << "completion time: " << completion_time << " \t address: "<< tgt_pkt->req->getVaddr() << std::endl;
+				}
+
+
+				//~~~For Two level config, un-comment this!~~~//
+				// completion_time += 83800;
+				// databaseManager::getStream() << "completion time: " << completion_time << " \t address: "<< tgt_pkt->req->getVaddr() << std::endl;
+				
+				
 			}
 
 			cpuSidePort->schedTimingResp(tgt_pkt, completion_time, true);
@@ -1871,7 +1884,7 @@ bool already_copied, bool pending_inval) {
 
 	//yay
 	if (pkt->req->hasVaddr() && databaseManager::containsAddress(pkt->req->getVaddr())) {
-		//databaseManager::getStream() << "SCHED respond: " << forward_time << " for address " << pkt->req->getVaddr() << std::endl;
+		databaseManager::getStream() << "SCHED respond: " << forward_time << " for address " << pkt->req->getVaddr() << std::endl;
 
 	}
 
@@ -2095,8 +2108,8 @@ void Cache::recvTimingSnoopReq(PacketPtr pkt) {
 	// YAY ~~our code~~
 	if (pkt->req->hasVaddr()) {
 			if (databaseManager::containsAddress(pkt->req->getVaddr())) {
-				//string s = blk ? "hit " + blk->print() : "miss";
-				//databaseManager::getStream() << "Snoopy: " << this->name() << " " << s << " address: " << pkt->req->getVaddr() << " time: " << curTick() << std::endl;
+				string s = blk ? "hit " + blk->print() : "miss";
+				databaseManager::getStream() << "Snoopy: " << this->name() << " " << s << " address: " << pkt->req->getVaddr() << " time: " << curTick() << std::endl;
 			}
 		}
 
