@@ -1,0 +1,14 @@
+Completion Time:
+
+
+2 level config:
+
+the first change - 40000
+
+
+
+3 level config:
+
+first change before adding L1<->L2 latency - 49500
+first change after adding L1<->L2 latency - 49990
+second change - 58950
